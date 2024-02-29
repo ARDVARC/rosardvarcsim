@@ -58,9 +58,9 @@
     </link>
 
     <link name="camera_link">
+      <pose>0 0 -0.05 0 1.249 0</pose>
       <inertial>
         <!-- place holder -->
-        <pose>-0.041 0 -0.162 0 0 0</pose>
         <mass>0.1</mass>
         <inertia>
           <ixx>0.001</ixx>
@@ -107,33 +107,10 @@
         </plugin>
       </sensor>
     </link>
-    <joint name='camera_joint' type='revolute'>
+    <joint name='camera_joint' type='fixed'>
       <child>camera_link</child>
       <parent>base_link</parent>
-      <pose>-0.01 0.03 -0.162 0 0 0</pose>
-      <axis>
-        <xyz>0 -1 0</xyz>
-        <limit>
-          <lower>-1.5708</lower>
-          <upper>0.7854</upper>
-          <effort>100</effort>
-          <velocity>-1</velocity>
-        </limit>
-        <dynamics>
-          <damping>0.1</damping>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-      <physics>
-        <ode>
-          <implicit_spring_damper>1</implicit_spring_damper>
-          <limit>
-            <!-- testing soft limits -->
-            <cfm>0.1</cfm>
-            <erp>0.2</erp>
-          </limit>
-        </ode>
-      </physics>
+      <pose>0 0 0 0 0 0</pose>
     </joint>
 
     <link name="left_leg">
