@@ -80,8 +80,8 @@
           <horizontal_fov>2.0</horizontal_fov>
           <image>
             <format>R8G8B8</format>
-            <width>640</width>
-            <height>360</height>
+            <width>1440</width>
+            <height>1080</height>
           </image>
           <clip>
             <near>0.05</near>
@@ -91,21 +91,19 @@
         <always_on>1</always_on>
         <update_rate>10</update_rate>
         <visualize>true</visualize>
-        <plugin name="GstCameraPlugin" filename="libgazebo_gst_camera_plugin.so">
-            <robotNamespace></robotNamespace>
-            <udpHost>127.0.0.1</udpHost>
-            <udpPort>5600</udpPort>
-        </plugin>
-        <plugin name="CameraManagerPlugin" filename="libgazebo_camera_manager_plugin.so">
-            <robotNamespace>ardvarc_drone</robotNamespace>
-            <interval>1</interval>
-            <width>3840</width>
-            <height>2160</height>
-            <maximum_zoom>8.0</maximum_zoom>
-            <video_uri>udp://127.0.0.1:5600</video_uri>
-            <system_id>1</system_id>
-            <cam_component_id>100</cam_component_id>
-            <mavlink_cam_udp_port>14530</mavlink_cam_udp_port>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>camera</cameraName>
+          <imageTopicName>frames</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_link</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
         </plugin>
       </sensor>
     </link>
