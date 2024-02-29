@@ -15,7 +15,7 @@
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
     <arg name="world" default="$(find rosardvarcsim)/worlds/main_sim_world.world"/>
-    <arg name="sdf" default="$(find rosardvarcsim)/models/typhoon_h480/typhoon_h480.sdf"/>
+    <arg name="sdf" default="$(find rosardvarcsim)/models/ardvarc_drone/ardvarc_drone.sdf"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
@@ -31,7 +31,7 @@
     <!-- PX4 SITL and Gazebo -->
 
     <!-- vehicle model and world -->
-    <env name="PX4_SIM_MODEL" value="gazebo-classic_typhoon_h480" />
+    <!-- <env name="PX4_SIM_MODEL" value="gazebo-classic_typhoon_h480" /> -->
 
     <!-- PX4 SITL -->
     <arg unless="$(arg interactive)" name="px4_command_arg1" value="-d"/>
@@ -49,7 +49,7 @@
         <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
     </include>
     <!-- gazebo model -->
-    <node name="$(anon vehicle_spawn)" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(arg sdf) -model typhoon_h480 -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+    <node name="$(anon vehicle_spawn)" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(arg sdf) -model ardvarc_drone -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
 
     <!-- MAVROS -->
     <include file="$(find mavros)/launch/px4.launch">
