@@ -58,4 +58,7 @@
         <arg name="fcu_url" value="$(arg fcu_url)"/>
         <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
     </include>
+    
+    <!-- rgvs -->
+    <node name="$(anon rgv1_spawn)" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv1 -x 5 -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
 </launch>

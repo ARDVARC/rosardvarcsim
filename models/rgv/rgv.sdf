@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<sdf version='1.5'>
+  <model name='rgv'>
+    <static>true</static>
+    <link name="link">
+        <visual name="body">
+          <pose>0 0 0.125 0 0 0</pose>
+          <geometry>
+            <box>
+                <size>0.508 0.43 0.25</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Black</name>
+            </script>
+          </material>
+        </visual>
+        <visual name="tag">
+          <pose>0 0 0.26 0 0 0</pose>
+          <geometry>
+            <box>
+                <size>0.381 0.381 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+                <uri>model://rgv/materials/scripts/tag.material</uri>
+                <name>vrc/tag</name>
+            </script>
+          </material>
+        </visual>
+    </link>
+  </model>
+</sdf>
