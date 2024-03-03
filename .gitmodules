@@ -1,3 +1,6 @@
 [submodule "multi_jackal"]
 	path = multi_jackal
 	url = https://github.com/NicksSimulationsROS/multi_jackal.git
+[submodule "PX4/PX4-Autopilot"]
+	path = PX4/PX4-Autopilot
+	url = https://github.com/PX4/PX4-Autopilot.git
