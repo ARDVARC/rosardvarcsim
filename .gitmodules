@@ -1,0 +1,3 @@
+[submodule "multi_jackal"]
+	path = multi_jackal
+	url = https://github.com/NicksSimulationsROS/multi_jackal.git
