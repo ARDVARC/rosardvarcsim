@@ -10,7 +10,7 @@
       <uri>model://ground_plane</uri>
     </include>
     <include>
-      <uri>model://asphalt_plane</uri>
+      <uri>model://ground</uri>
     </include>
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model> 
