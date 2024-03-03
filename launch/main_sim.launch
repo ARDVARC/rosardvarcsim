@@ -62,4 +62,8 @@
     <!-- Add RGV models to Gazebo -->
     <node name="rgv1_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv1 -x $(arg rgv1_x) -y $(arg rgv1_y) -z 0 -R 0 -P 0 -Y $(arg rgv1_Y)"/>
     <node name="rgv2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv2 -x $(arg rgv2_x) -y $(arg rgv2_y) -z 0 -R 0 -P 0 -Y $(arg rgv2_Y)"/>
+    
+    <!-- Add RGV controller nodes -->
+    <node name="rgv1_controller" pkg="rosardvarcsim" type="rgv_controller.py" args="rgv1 $(arg rgv1_x) $(arg rgv1_y) $(arg rgv1_Y)"/>
+    <node name="rgv2_controller" pkg="rosardvarcsim" type="rgv_controller.py" args="rgv2 $(arg rgv1_x) $(arg rgv1_y) $(arg rgv1_Y)"/>
 </launch>
