@@ -87,8 +87,6 @@ class RGV:
             # Take a step
             newYawAngle, vec_newPos_local_ne = moveRgv(t + deltaTime, t, trix_vec_position_local_ne[-1], vec_yawAngle[-1], vec_movementType[-1])
             if (distanceToBoundary(vec_newPos_local_ne) < RGV.safeDistanceFromEdge):
-                rospy.loginfo(t)
-                rospy.loginfo(vec_movementType[-1])
                 # If the step would take the RGV out of the safe region, don't
                 # let it. Instead, only move until you hit the safe region,
                 # then note that the next step needs to be some kind of u-turn
@@ -211,7 +209,8 @@ rgv_x0: float = rospy.get_param("~x0", 0) # type: ignore
 rgv_y0: float = rospy.get_param("~y0", 0) # type: ignore
 rgv_Y0: float = rospy.get_param("~Y0", 0) # type: ignore
 seed: int = rospy.get_param("~seed", int(random.random()*(2**16))) # type: ignore
-rgv = RGV(seed, np.array([rgv_x0,rgv_y0]), rgv_Y0, 60)
+rgv = RGV(seed, np.array([rgv_x0,rgv_y0]), rgv_Y0, 60*60)
+# rospy.loginfo(f"\nPositions:\n{rgv.trix_vec_position_local_ne}\nMovement Types:\n{rgv.vec_movementType}\nTimes:\n{rgv.vec_time}")
 
 rospy.wait_for_service("gazebo/set_model_state")
 mover_service_proxy = rospy.ServiceProxy("gazebo/set_model_state", SetModelState)
@@ -227,9 +226,7 @@ start_time = rospy.Time.now()
 
 while not rospy.is_shutdown():
     resp: SetModelStateResponse = mover_service_proxy(rqst)
-    if resp.success:
-        rospy.loginfo(resp.status_message)
-    else:
+    if not resp.success:
         rospy.logwarn(resp.status_message)
     rate.sleep()
     yaw, pos = getRgvStateAtTime(rgv, (rospy.Time.now() - start_time).to_sec())
