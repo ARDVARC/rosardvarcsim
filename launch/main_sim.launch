@@ -3,21 +3,25 @@
     
     <!-- Modified from https://github.com/PX4/PX4-Autopilot/blob/main/launch/mavros_posix_sitl.launch -->
     
-    <!-- MAVROS posix SITL environment launch script -->
-    <!-- launches MAVROS, PX4 SITL, Gazebo environment, and spawns vehicle -->
-    <!-- vehicle pose -->
+    <!-- UAS pose -->
     <arg name="x" default="0"/>
     <arg name="y" default="0"/>
     <arg name="z" default="0"/>
     <arg name="R" default="0"/>
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/>
-    <!-- vehicle model and world -->
-    <arg name="est" default="ekf2"/>
+    <!-- RGV poses -->
+    <arg name="rgv1_x" default="2"/>
+    <arg name="rgv1_y" default="2"/>
+    <arg name="rgv1_Y" default="0"/>
+    <arg name="rgv2_x" default="-2"/>
+    <arg name="rgv2_y" default="-2"/>
+    <arg name="rgv2_Y" default="1.57079632679"/>
+    <!-- UAS model and world -->
     <arg name="world" default="$(find rosardvarcsim)/worlds/main_sim_world.world"/>
     <arg name="sdf" default="$(find rosardvarcsim)/models/ardvarc_drone/ardvarc_drone.sdf"/>
 
-    <!-- gazebo configs -->
+    <!-- Gazebo configs -->
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
     <arg name="verbose" default="false"/>
@@ -28,10 +32,6 @@
     <arg name="respawn_mavros" default="false"/>
     <!-- PX4 configs -->
     <arg name="interactive" default="true"/>
-    <!-- PX4 SITL and Gazebo -->
-
-    <!-- vehicle model and world -->
-    <!-- <env name="PX4_SIM_MODEL" value="gazebo-classic_typhoon_h480" /> -->
 
     <!-- PX4 SITL -->
     <arg unless="$(arg interactive)" name="px4_command_arg1" value="-d"/>
@@ -39,7 +39,7 @@
     <node name="sitl" pkg="px4" type="px4" output="screen"
         args="$(find px4)/build/px4_sitl_default/etc -s etc/init.d-posix/rcS $(arg px4_command_arg1)" required="true"/>
 
-    <!-- Gazebo sim -->
+    <!-- Gazebo -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="gui" value="$(arg gui)"/>
         <arg name="world_name" value="$(arg world)"/>
@@ -48,8 +48,8 @@
         <arg name="paused" value="$(arg paused)"/>
         <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
     </include>
-    <!-- gazebo model -->
-    <node name="$(anon vehicle_spawn)" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(arg sdf) -model ardvarc_drone -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+    <!-- Add UAS model to Gazebo -->
+    <node name="uas_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(arg sdf) -model ardvarc_drone -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
 
     <!-- MAVROS -->
     <include file="$(find mavros)/launch/px4.launch">
@@ -59,6 +59,7 @@
         <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
     </include>
     
-    <!-- rgvs -->
-    <node name="$(anon rgv1_spawn)" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv1 -x 5 -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+    <!-- Add RGV models to Gazebo -->
+    <node name="rgv1_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv1 -x $(arg rgv1_x) -y $(arg rgv1_y) -z 0 -R 0 -P 0 -Y $(arg rgv1_Y)"/>
+    <node name="rgv2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv2 -x $(arg rgv2_x) -y $(arg rgv2_y) -z 0 -R 0 -P 0 -Y $(arg rgv2_Y)"/>
 </launch>

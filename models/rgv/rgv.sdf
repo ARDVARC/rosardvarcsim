@@ -31,6 +31,20 @@
             </script>
           </material>
         </visual>
+        <visual name="front">
+          <pose>0.224 0 0.25 0 0 0</pose>
+          <geometry>
+            <box>
+                <size>0.02 0.02 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Yellow</name>
+            </script>
+          </material>
+        </visual>
         <visual name="tag">
           <pose>0 0 0.26 0 0 0</pose>
           <geometry>
@@ -43,6 +57,20 @@
                 <uri>model://rgv/materials/scripts/tag.material</uri>
                 <uri>model://rgv/materials/textures</uri>
                 <name>vrc/tag</name>
+            </script>
+          </material>
+        </visual>
+        <visual name="tag_white_edge">
+          <pose>0 0 0.259 0 0 0</pose>
+          <geometry>
+            <box>
+                <size>0.406 0.406 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/White</name>
             </script>
           </material>
         </visual>
