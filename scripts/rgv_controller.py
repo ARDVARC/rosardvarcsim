@@ -12,7 +12,7 @@ import random
 from typing import Tuple
 
 
-UPDATE_RATE = 30
+UPDATE_RATE = 120
 SPEED = 0.5
 
 DX = SPEED/UPDATE_RATE
@@ -127,26 +127,26 @@ def getRgvStateAtTime(rgv: RGV, t: float) -> Tuple[float, np.ndarray]:
     return moveRgv(t, startTime, vec_startPos_local_ne, startYawAngle, movementType)
 
 def moveRgv(t: float, startTime: float, vec_startPos_local_ne: np.ndarray, startYawAngle: float, movementType: RgvMovementType) -> Tuple[float, np.ndarray]:
-    if movementType is RgvMovementType.Straight:
+    if movementType == RgvMovementType.Straight:
         progressTime = t - startTime
         vec_dir_local_ne = np.array([np.cos(startYawAngle),np.sin(startYawAngle)])
         vec_newPos_local_ne = vec_startPos_local_ne + RGV.speed * progressTime * vec_dir_local_ne
         newYawAngle = startYawAngle
-    elif movementType is RgvMovementType.ArcLeft:
+    elif movementType == RgvMovementType.ArcLeft:
         vec_radiusVectorIn_local_ne = RGV.turningRadius * np.array([-np.sin(startYawAngle),np.cos(startYawAngle)])
         progressTime = t - startTime
         addedYawAngle = RGV.turningSpeed * progressTime
         newYawAngle = startYawAngle + addedYawAngle
         vec_radiusVectorOut_local_ne = RGV.turningRadius * np.array([np.sin(newYawAngle),-np.cos(newYawAngle)])
         vec_newPos_local_ne = vec_startPos_local_ne + vec_radiusVectorIn_local_ne + vec_radiusVectorOut_local_ne
-    elif movementType is  RgvMovementType.ArcRight:
+    elif movementType == RgvMovementType.ArcRight:
         vec_radiusVectorIn_local_ne = RGV.turningRadius * np.array([np.sin(startYawAngle),-np.cos(startYawAngle)])
         progressTime = t - startTime
         addedYawAngle = -RGV.turningSpeed * progressTime
         newYawAngle = startYawAngle + addedYawAngle
         vec_radiusVectorOut_local_ne = RGV.turningRadius * np.array([-np.sin(newYawAngle),np.cos(newYawAngle)])
         vec_newPos_local_ne = vec_startPos_local_ne + vec_radiusVectorIn_local_ne + vec_radiusVectorOut_local_ne
-    elif movementType is  RgvMovementType.UTurnLeft:
+    elif movementType == RgvMovementType.UTurnLeft:
         # U-turn movement has two parts
         vec_radiusVectorIn_local_ne = RGV.uTurnRadius * np.array([-np.sin(startYawAngle),np.cos(startYawAngle)])
         progressTime = t - startTime
@@ -163,7 +163,7 @@ def moveRgv(t: float, startTime: float, vec_startPos_local_ne: np.ndarray, start
             progressTime = progressTime - RGV.uTurnTurnTime
             vec_dir_local_ne = np.array([np.cos(newYawAngle),np.sin(newYawAngle)])
             vec_newPos_local_ne = vec_startPos_local_ne + RGV.speed * progressTime * vec_dir_local_ne
-    elif movementType is  RgvMovementType.UTurnRight:
+    elif movementType == RgvMovementType.UTurnRight:
         # U-turn movement has two parts
         vec_radiusVectorIn_local_ne = RGV.uTurnRadius * np.array([np.sin(startYawAngle),-np.cos(startYawAngle)])
         progressTime = t - startTime
