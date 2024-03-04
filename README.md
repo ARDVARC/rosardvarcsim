@@ -10,9 +10,16 @@ See **Setup** below first. Once set up, run the simulation with:
 roslaunch rosardvarcsim main_sim.launch
 ```
 
+To not load the Gazebo GUI (which slows things down quite a bit), run:
+```
+roslaunch rosardvarcsim main_sim.launch gui:=false
+```
+
 ## Setup
 
-Do this:
+If you're using WSL I'd recommend following [these instructions to set up your graphics card to work with WSL](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps). It should make Gazebo run a lot faster.
+
+Next add libgstreamer stuff for the camera:
 ```
 sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio -y
 ```
@@ -26,7 +33,9 @@ cd path/to/wherever/you/want \
 && DONT_RUN=1 make px4_sitl gazebo-classic_typhoon_h480 \
 && echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)" >> ~/.bashrc \
 && echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)/Tools/simulation/gazebo-classic/sitl_gazebo-classic" >> ~/.bashrc \
-&& echo "source $(pwd)/Tools/simulation/gazebo-classic/setup_gazebo.bash $(pwd) $(pwd)/build/px4_sitl_default" >> ~/.bashrc \
+&& echo "export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:$(pwd)/build/px4_sitl_default/build_gazebo-classic" >> ~/.bashrc \
+&& echo "export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(pwd)/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models" >> ~/.bashrc \
+&& echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/build/px4_sitl_default/build_gazebo-classic" >> ~/.bashrc \
 && source ~/catkin_ws/devel/setup.bash \
 && exec bash
 ```
@@ -45,4 +54,15 @@ cd ~/catkin_ws/src \
 && git clone https://github.com/ARDVARC/rosardvarcsim.git \
 && cd .. \
 && catkin_make
+```
+
+You'll need `scipy`:
+```
+pip install scipy
+```
+
+Finally add our model paths to your `.bashrc` by running:
+```
+echo "export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/catkin_ws/src/rosardvarcsim/models" >> ~/.bashrc \
+&& exec bash
 ```
