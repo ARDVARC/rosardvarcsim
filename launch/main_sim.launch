@@ -78,4 +78,7 @@
         <param name="Y0" type="double" value="$(arg rgv2_Y)"/>
         <param name="seed" type="int" value="2"/>
     </node>
+    
+    <!-- Add bluetooth data generator -->
+    <node name="fake_bluetooth" pkg="rosardvarcsim" type="fake_bluetooth.py" output="screen"/>
 </launch>
