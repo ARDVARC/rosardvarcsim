@@ -29,6 +29,7 @@ Next this package requires a local clone and build of the PX4 repo:
 cd path/to/wherever/you/want \
 && git clone https://github.com/PX4/PX4-Autopilot.git --recursive \
 && bash ./PX4-Autopilot/Tools/setup/ubuntu.sh --no-sim-tools --no-nuttx \
+&& cd PX4-Autopilot \
 && DONT_RUN=1 make px4_sitl_default gazebo-classic \
 && DONT_RUN=1 make px4_sitl gazebo-classic_typhoon_h480 \
 && echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)" >> ~/.bashrc \
