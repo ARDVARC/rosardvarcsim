@@ -49,7 +49,7 @@
           <pose>0 0 0.26 0 0 0</pose>
           <geometry>
             <box>
-                <size>0.381 0.381 0.001</size>
+                <size>0.352 0.352 0.001</size>
             </box>
           </geometry>
           <material>
@@ -61,10 +61,10 @@
           </material>
         </visual>
         <visual name="tag_white_edge">
-          <pose>0 0 0.259 0 0 0</pose>
+          <pose>0 0 0.253 0 0 0</pose>
           <geometry>
             <box>
-                <size>0.406 0.406 0.001</size>
+                <size>0.381 0.381 0.001</size>
             </box>
           </geometry>
           <material>

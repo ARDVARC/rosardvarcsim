@@ -37,13 +37,40 @@
           </friction>
         </surface>
       </collision>
-      <visual name='base_link_visual'>
-        <pose>0 0 0 0 0 3.141592</pose>
+      <visual name='base_link_visual_1'>
+        <pose>0 0 0 0 0 0.52359877559</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/main_body_remeshed_v3.stl</uri>
-          </mesh>
+          <box>
+            <size>0.67 0.05 0.05</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <visual name='base_link_visual_2'>
+        <pose>0 0 0 0 0 1.57079632679</pose>
+        <geometry>
+          <box>
+            <size>0.67 0.05 0.05</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <visual name='base_link_visual_3'>
+        <pose>0 0 0 0 0 2.61799387799</pose>
+        <geometry>
+          <box>
+            <size>0.67 0.05 0.05</size>
+          </box>
         </geometry>
         <material>
           <script>
@@ -178,12 +205,27 @@
         </surface>
       </collision>
       <visual name='base_link_left_leg'>
-        <pose>0 0 0 0 0 0</pose>
+        <pose>-0.005 -0.14314 -0.207252 0 1.56893 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/leg2_remeshed_v3.stl</uri>
-          </mesh>
+          <cylinder>
+            <radius>0.012209</radius>
+            <length>0.3</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <visual name='base_link_left_leg_bar'>
+        <pose>0.00052 -0.08503 -0.121187 -0.501318 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.00914984</radius>
+            <length>0.176893</length>
+          </cylinder>
         </geometry>
         <material>
           <script>
@@ -285,12 +327,27 @@
         </surface>
       </collision>
       <visual name='base_link_right_leg'>
-        <pose>0 0 0 0 0 0</pose>
+        <pose>-0.005 0.14314 -0.207252 0 1.56893 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/leg1_remeshed_v3.stl</uri>
-          </mesh>
+          <cylinder>
+            <radius>0.012209</radius>
+            <length>0.3</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <visual name='base_link_right_leg_bar'>
+        <pose>0.00052 0.08503 -0.121187 0.501318 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.00914984</radius>
+            <length>0.176893</length>
+          </cylinder>
         </geometry>
         <material>
           <script>
@@ -391,12 +448,11 @@
         </surface>
       </collision>
       <visual name='rotor_3_visual'>
-        <pose>-0.211396 -0.119762 -0.082219 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/prop_ccw_assembly_remeshed_v3.stl</uri>
-          </mesh>
+          <box>
+            <size>0.256 0.005 0.005</size>
+          </box>
         </geometry>
         <material>
           <script>
@@ -463,12 +519,11 @@
         </surface>
       </collision>
       <visual name='rotor_0_visual'>
-        <pose>-0.211396 -0.119762 -0.082219 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/prop_ccw_assembly_remeshed_v3.stl</uri>
-          </mesh>
+          <box>
+            <size>0.256 0.005 0.005</size>
+          </box>
         </geometry>
         <material>
           <script>
@@ -535,12 +590,11 @@
         </surface>
       </collision>
       <visual name='rotor_4_visual'>
-        <pose>0.00187896 -0.242705 -0.0822169 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/prop_cw_assembly_remeshed_v3.stl</uri>
-          </mesh>
+          <box>
+            <size>0.256 0.005 0.005</size>
+          </box>
         </geometry>
         <material>
           <script>
@@ -607,12 +661,11 @@
         </surface>
       </collision>
       <visual name='rotor_1_visual'>
-        <pose>0.00187896 -0.242705 -0.0822169 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/prop_cw_assembly_remeshed_v3.stl</uri>
-          </mesh>
+          <box>
+            <size>0.256 0.005 0.005</size>
+          </box>
         </geometry>
         <material>
           <script>
@@ -680,12 +733,11 @@
         </surface>
       </collision>
       <visual name='rotor_5_visual'>
-        <pose>-0.211396 -0.119762 -0.082219 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/prop_ccw_assembly_remeshed_v3.stl</uri>
-          </mesh>
+          <box>
+            <size>0.256 0.005 0.005</size>
+          </box>
         </geometry>
         <material>
           <script>
@@ -752,12 +804,11 @@
         </surface>
       </collision>
       <visual name='rotor_2_visual'>
-        <pose>0.00187896 -0.242705 -0.0822169 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
-          <mesh>
-            <scale>0.001 0.001 0.001</scale>
-            <uri>model://typhoon_h480/meshes/prop_cw_assembly_remeshed_v3.stl</uri>
-          </mesh>
+          <box>
+            <size>0.256 0.005 0.005</size>
+          </box>
         </geometry>
         <material>
           <script>
