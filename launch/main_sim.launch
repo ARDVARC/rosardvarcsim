@@ -10,7 +10,8 @@
     <arg name="R" default="0"/>
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/>
-    <!-- RGV poses -->
+    <!-- RGV params -->
+    <arg name="rgvs" default="true"/>
     <arg name="rgv1_x" default="2"/>
     <arg name="rgv1_y" default="2"/>
     <arg name="rgv1_Y" default="0"/>
@@ -60,26 +61,28 @@
         <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
     </include>
     
-    <!-- Add RGV models to Gazebo -->
-    <node name="rgv1_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv1 -x $(arg rgv1_x) -y $(arg rgv1_y) -z 0 -R 0 -P 0 -Y $(arg rgv1_Y)"/>
-    <node name="rgv2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv2 -x $(arg rgv2_x) -y $(arg rgv2_y) -z 0 -R 0 -P 0 -Y $(arg rgv2_Y)"/>
-    
-    <!-- Add RGV controller nodes -->
-    <node name="rgv1_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
-        <param name="rgv_name" type="string" value="rgv1"/>
-        <param name="x0" type="double" value="$(arg rgv1_x)"/>
-        <param name="y0" type="double" value="$(arg rgv1_y)"/>
-        <param name="Y0" type="double" value="$(arg rgv1_Y)"/>
-        <param name="seed" type="int" value="1"/>
-    </node>
-    <node name="rgv2_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
-        <param name="rgv_name" type="string" value="rgv2"/>
-        <param name="x0" type="double" value="$(arg rgv2_x)"/>
-        <param name="y0" type="double" value="$(arg rgv2_y)"/>
-        <param name="Y0" type="double" value="$(arg rgv2_Y)"/>
-        <param name="seed" type="int" value="2"/>
-    </node>
-    
-    <!-- Add bluetooth data generator -->
-    <node name="fake_bluetooth" pkg="rosardvarcsim" type="fake_bluetooth.py" output="screen"/>
+    <group if="$(arg rgvs)">
+        <!-- Add RGV models to Gazebo -->
+        <node name="rgv1_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv1 -x $(arg rgv1_x) -y $(arg rgv1_y) -z 0 -R 0 -P 0 -Y $(arg rgv1_Y)"/>
+        <node name="rgv2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv/rgv.sdf -model rgv2 -x $(arg rgv2_x) -y $(arg rgv2_y) -z 0 -R 0 -P 0 -Y $(arg rgv2_Y)"/>
+        
+        <!-- Add RGV controller nodes -->
+        <node name="rgv1_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
+            <param name="rgv_name" type="string" value="rgv1"/>
+            <param name="x0" type="double" value="$(arg rgv1_x)"/>
+            <param name="y0" type="double" value="$(arg rgv1_y)"/>
+            <param name="Y0" type="double" value="$(arg rgv1_Y)"/>
+            <param name="seed" type="int" value="1"/>
+        </node>
+        <node name="rgv2_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
+            <param name="rgv_name" type="string" value="rgv2"/>
+            <param name="x0" type="double" value="$(arg rgv2_x)"/>
+            <param name="y0" type="double" value="$(arg rgv2_y)"/>
+            <param name="Y0" type="double" value="$(arg rgv2_Y)"/>
+            <param name="seed" type="int" value="2"/>
+        </node>
+        
+        <!-- Add bluetooth data generator -->
+        <node name="fake_bluetooth" pkg="rosardvarcsim" type="fake_bluetooth.py" output="screen"/>
+    </group>
 </launch>
