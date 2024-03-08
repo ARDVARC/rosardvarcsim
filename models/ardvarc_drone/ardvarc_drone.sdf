@@ -235,10 +235,30 @@
         </material>
       </visual>
     </link>
-    <joint name='left_leg_joint' type='fixed'>
+    <joint name='left_leg_joint' type='revolute'>
       <child>left_leg</child>
       <parent>base_link</parent>
       <pose>0.00026 -0.040515 -0.048 0 0 0</pose>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>1</upper>
+          <effort>100</effort>
+          <velocity>-1</velocity>
+          <stiffness>100000000</stiffness>
+          <dissipation>1</dissipation>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
     </joint>
 
     <link name="right_leg">
@@ -337,10 +357,30 @@
         </material>
       </visual>
     </link>
-    <joint name='right_leg_joint' type='fixed'>
+    <joint name='right_leg_joint' type='revolute'>
       <child>right_leg</child>
       <parent>base_link</parent>
       <pose>0.00026 0.040515 -0.048 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>1</upper>
+          <effort>100</effort>
+          <velocity>-1</velocity>
+          <stiffness>100000000</stiffness>
+          <dissipation>1</dissipation>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
     </joint>
 
     <link name='ardvarc_drone/imu_link'>
@@ -358,9 +398,23 @@
         </inertia>
       </inertial>
     </link>
-    <joint name='ardvarc_drone/imu_joint' type='fixed'>
+    <joint name='ardvarc_drone/imu_joint' type='revolute'>
       <child>ardvarc_drone/imu_link</child>
       <parent>base_link</parent>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
     </joint>
     <link name='rotor_3'>
       <pose>0.211396 0.119762 0.082219 0 0 0</pose>
@@ -790,22 +844,13 @@
       </physics>
     </joint>
 
-    <link name="gps_link">
+    <include>
+      <uri>model://gps</uri>
       <pose>0 0 0 0 0 0</pose>
-      <sensor name="gps" type="gps">
-        <pose>0 0 0 0 0 0</pose>
-        <update_rate>5.0</update_rate>
-        <always_on>true</always_on>
-        <visualize>false</visualize>
-        <plugin name="gps_plugin" filename="libgazebo_gps_plugin.so">
-          <robotNamespace></robotNamespace>
-          <gpsNoise>false</gpsNoise>
-          <topic>gps</topic>
-        </plugin>
-      </sensor>
-    </link>
+      <name>gps</name>
+    </include>
     <joint name='gps_joint' type='fixed'>
-      <child>gps_link</child>
+      <child>gps::link</child>
       <parent>base_link</parent>
     </joint>
 
@@ -923,9 +968,9 @@
     <plugin name='magnetometer_plugin' filename='libgazebo_magnetometer_plugin.so'>
       <robotNamespace/>
       <pubRate>100</pubRate>
-      <noiseDensity>0.00004</noiseDensity>
-      <randomWalk>6.4e-07</randomWalk>
-      <biasCorrelationTime>6000</biasCorrelationTime>
+      <noiseDensity>0.0004</noiseDensity>
+      <randomWalk>6.4e-06</randomWalk>
+      <biasCorrelationTime>600</biasCorrelationTime>
       <magTopic>/mag</magTopic>
     </plugin>
     <plugin name='barometer_plugin' filename='libgazebo_barometer_plugin.so'>
@@ -1002,6 +1047,42 @@
           <zero_position_armed>100</zero_position_armed>
           <joint_control_type>velocity</joint_control_type>
         </channel>
+        <channel name="left_leg">
+          <input_index>9</input_index>
+          <input_offset>1</input_offset>
+          <input_scaling>0.5</input_scaling>
+          <zero_position_disarmed>0</zero_position_disarmed>
+          <zero_position_armed>0</zero_position_armed>
+          <joint_control_type>position</joint_control_type>
+          <joint_control_pid>
+            <p>3.5</p>
+            <i>0.5</i>
+            <d>0</d>
+            <iMax>4</iMax>
+            <iMin>-4</iMin>
+            <cmdMax>6</cmdMax>
+            <cmdMin>-6</cmdMin>
+          </joint_control_pid>
+          <joint_name>left_leg_joint</joint_name>
+        </channel>
+        <channel name="right_leg">
+          <input_index>10</input_index>
+          <input_offset>1</input_offset>
+          <input_scaling>0.5</input_scaling>
+          <zero_position_disarmed>0</zero_position_disarmed>
+          <zero_position_armed>0</zero_position_armed>
+          <joint_control_type>position</joint_control_type>
+          <joint_control_pid>
+            <p>3.5</p>
+            <i>0.5</i>
+            <d>0</d>
+            <iMax>4</iMax>
+            <iMin>-4</iMin>
+            <cmdMax>6</cmdMax>
+            <cmdMin>-6</cmdMin>
+          </joint_control_pid>
+          <joint_name>right_leg_joint</joint_name>
+        </channel>
       </control_channels>
     </plugin>
     <static>0</static>
@@ -1009,14 +1090,14 @@
       <robotNamespace></robotNamespace>
       <linkName>ardvarc_drone/imu_link</linkName>
       <imuTopic>/imu</imuTopic>
-      <gyroscopeNoiseDensity>0.00018665</gyroscopeNoiseDensity>
-      <gyroscopeRandomWalk>3.8785e-06</gyroscopeRandomWalk>
-      <gyroscopeBiasCorrelationTime>5000.0</gyroscopeBiasCorrelationTime>
-      <gyroscopeTurnOnBiasSigma>0</gyroscopeTurnOnBiasSigma>
-      <accelerometerNoiseDensity>0.00186</accelerometerNoiseDensity>
-      <accelerometerRandomWalk>0.0006</accelerometerRandomWalk>
-      <accelerometerBiasCorrelationTime>600.0</accelerometerBiasCorrelationTime>
-      <accelerometerTurnOnBiasSigma>0</accelerometerTurnOnBiasSigma>
+      <gyroscopeNoiseDensity>0.0003394</gyroscopeNoiseDensity>
+      <gyroscopeRandomWalk>3.8785e-05</gyroscopeRandomWalk>
+      <gyroscopeBiasCorrelationTime>1000.0</gyroscopeBiasCorrelationTime>
+      <gyroscopeTurnOnBiasSigma>0.0087</gyroscopeTurnOnBiasSigma>
+      <accelerometerNoiseDensity>0.004</accelerometerNoiseDensity>
+      <accelerometerRandomWalk>0.006</accelerometerRandomWalk>
+      <accelerometerBiasCorrelationTime>300.0</accelerometerBiasCorrelationTime>
+      <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
     </plugin>
   </model>
 </sdf>
