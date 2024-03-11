@@ -235,30 +235,10 @@
         </material>
       </visual>
     </link>
-    <joint name='left_leg_joint' type='revolute'>
+    <joint name='left_leg_joint' type='fixed'>
       <child>left_leg</child>
       <parent>base_link</parent>
       <pose>0.00026 -0.040515 -0.048 0 0 0</pose>
-      <axis>
-        <xyz>-1 0 0</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper>1</upper>
-          <effort>100</effort>
-          <velocity>-1</velocity>
-          <stiffness>100000000</stiffness>
-          <dissipation>1</dissipation>
-        </limit>
-        <dynamics>
-          <damping>0.1</damping>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-      <physics>
-        <ode>
-          <implicit_spring_damper>1</implicit_spring_damper>
-        </ode>
-      </physics>
     </joint>
 
     <link name="right_leg">
@@ -357,30 +337,10 @@
         </material>
       </visual>
     </link>
-    <joint name='right_leg_joint' type='revolute'>
+    <joint name='right_leg_joint' type='fixed'>
       <child>right_leg</child>
       <parent>base_link</parent>
       <pose>0.00026 0.040515 -0.048 0 0 0</pose>
-      <axis>
-        <xyz>1 0 0</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper>1</upper>
-          <effort>100</effort>
-          <velocity>-1</velocity>
-          <stiffness>100000000</stiffness>
-          <dissipation>1</dissipation>
-        </limit>
-        <dynamics>
-          <damping>0.1</damping>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-      <physics>
-        <ode>
-          <implicit_spring_damper>1</implicit_spring_damper>
-        </ode>
-      </physics>
     </joint>
 
     <link name='ardvarc_drone/imu_link'>
