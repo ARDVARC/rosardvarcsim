@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version='1.5'>
-  <model name='rgv'>
+  <model name='rgv1'>
     <static>true</static>
     <link name="link">
         <visual name="body">
@@ -54,9 +54,9 @@
           </geometry>
           <material>
             <script>
-                <uri>model://rgv/materials/scripts/tag.material</uri>
-                <uri>model://rgv/materials/textures</uri>
-                <name>vrc/tag</name>
+                <uri>model://rgv1/materials/scripts/tag1.material</uri>
+                <uri>model://rgv1/materials/textures</uri>
+                <name>tag1</name>
             </script>
           </material>
         </visual>

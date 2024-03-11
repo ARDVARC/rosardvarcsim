@@ -1,4 +1,4 @@
-material vrc/tag
+material tag1
 {
 	technique
 	{
@@ -10,7 +10,7 @@ material vrc/tag
 
 			texture_unit
 			{
-				texture marker23.png
+				texture 6x6_1000-5.png
 				filtering none
 				scale 1 1
 			}
