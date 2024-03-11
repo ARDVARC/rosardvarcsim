@@ -84,5 +84,8 @@
         
         <!-- Add bluetooth data generator -->
         <node name="fake_bluetooth" pkg="rosardvarcsim" type="fake_bluetooth.py" output="screen"/>
+        
+        <!-- Add estimate generator -->
+        <node name="fake_estimator" pkg="rosardvarcsim" type="fake_estimator.py" output="screen"/>
     </group>
 </launch>
