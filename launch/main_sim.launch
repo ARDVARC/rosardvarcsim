@@ -12,6 +12,8 @@
     <arg name="Y" default="0"/>
     <!-- RGV params -->
     <arg name="rgvs" default="true"/>
+    <arg name="rgv_bluetooth" default="true"/>
+    <arg name="rgv_estimator" default="false"/>
     <arg name="rgv1_x" default="2"/>
     <arg name="rgv1_y" default="2"/>
     <arg name="rgv1_Y" default="0"/>
@@ -82,7 +84,14 @@
             <param name="seed" type="int" value="2"/>
         </node>
         
-        <!-- Add bluetooth data generator -->
-        <node name="fake_bluetooth" pkg="rosardvarcsim" type="fake_bluetooth.py" output="screen"/>
+        <group if="$(arg rgv_bluetooth)">
+            <!-- Add bluetooth data generator -->
+            <node name="fake_bluetooth" pkg="rosardvarcsim" type="fake_bluetooth.py" output="screen"/>
+        </group>
+        
+        <group if="$(arg rgv_estimator)">
+            <!-- Add estimate generator -->
+            <node name="fake_estimator" pkg="rosardvarcsim" type="fake_estimator.py" output="screen"/>
+        </group>
     </group>
 </launch>

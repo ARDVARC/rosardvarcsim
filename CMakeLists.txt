@@ -164,6 +164,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/rgv_controller.py
   scripts/fake_bluetooth.py
+  scripts/fake_estimator.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
