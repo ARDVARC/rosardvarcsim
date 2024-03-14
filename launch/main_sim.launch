@@ -17,9 +17,15 @@
     <arg name="rgv1_x" default="2"/>
     <arg name="rgv1_y" default="2"/>
     <arg name="rgv1_Y" default="0"/>
+    <arg name="rgv1_load_from_file" default="true"/>
+    <arg name="rgv1_load_file" default="'rgv_path_1.csv'"/>
+    <arg name="rgv1_seed" default="1"/>
     <arg name="rgv2_x" default="-2"/>
     <arg name="rgv2_y" default="-2"/>
     <arg name="rgv2_Y" default="1.57079632679"/>
+    <arg name="rgv2_load_from_file" default="true"/>
+    <arg name="rgv2_load_file" default="'rgv_path_2.csv'"/>
+    <arg name="rgv2_seed" default="2"/>
     <!-- UAS model and world -->
     <arg name="world" default="$(find rosardvarcsim)/worlds/main_sim_world.world"/>
     <arg name="sdf" default="$(find rosardvarcsim)/models/ardvarc_drone/ardvarc_drone.sdf"/>
@@ -69,20 +75,10 @@
         <node name="rgv2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv2/rgv2.sdf -model rgv2 -x $(arg rgv2_x) -y $(arg rgv2_y) -z 0 -R 0 -P 0 -Y $(arg rgv2_Y)"/>
         
         <!-- Add RGV controller nodes -->
-        <node name="rgv1_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
-            <param name="rgv_name" type="string" value="rgv1"/>
-            <param name="x0" type="double" value="$(arg rgv1_x)"/>
-            <param name="y0" type="double" value="$(arg rgv1_y)"/>
-            <param name="Y0" type="double" value="$(arg rgv1_Y)"/>
-            <param name="seed" type="int" value="1"/>
-        </node>
-        <node name="rgv2_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
-            <param name="rgv_name" type="string" value="rgv2"/>
-            <param name="x0" type="double" value="$(arg rgv2_x)"/>
-            <param name="y0" type="double" value="$(arg rgv2_y)"/>
-            <param name="Y0" type="double" value="$(arg rgv2_Y)"/>
-            <param name="seed" type="int" value="2"/>
-        </node>
+        <node if="$(arg rgv1_load_from_file)" name="rgv1_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen" args="rgv1_controller rgv1 load_file $(arg rgv1_load_file)"/>
+        <node unless="$(arg rgv1_load_from_file)" name="rgv1_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen" args="rgv1_controller rgv1 generate --seed=$(arg rgv1_seed) --x0=$(arg rgv1_x) --y0=$(arg rgv1_y) --yaw0=$(arg rgv1_Y)"/>
+        <node if="$(arg rgv2_load_from_file)" name="rgv2_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen" args="rgv2_controller rgv2 load_file $(arg rgv2_load_file)"/>
+        <node unless="$(arg rgv2_load_from_file)" name="rgv2_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen" args="rgv2_controller rgv2 generate --seed=$(arg rgv2_seed) --x0=$(arg rgv2_x) --y0=$(arg rgv2_y) --yaw0=$(arg rgv2_Y)"/>
         
         <group if="$(arg rgv_bluetooth)">
             <!-- Add bluetooth data generator -->
