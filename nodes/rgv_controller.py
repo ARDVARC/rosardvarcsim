@@ -40,12 +40,14 @@ def load_file_func(args: argparse.Namespace) -> Path:
     
     with open(file_path) as csvfile:
         reader = csv.reader(csvfile)
+        t = 0
         ts = []
         xs = []
         ys = []
         yaws = []
         for line in reader:
-            ts.append(float(line[0]))
+            ts.append(t)
+            t += float(line[0])
             xs.append(float(line[1]))
             ys.append(float(line[2]))
             yaws.append(float(line[3]))

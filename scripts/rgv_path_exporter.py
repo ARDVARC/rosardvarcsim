@@ -37,4 +37,4 @@ with open(file_path, 'w') as csvfile:
     writer = csv.writer(csvfile)
     for t in np.arange(0.0, args.duration, 1/args.sample_rate):
         rgv_state = getRgvStateAtTime(rgv=rgv, t=t)
-        writer.writerow([t, rgv_state[1][0], rgv_state[1][1], rgv_state[0]])
+        writer.writerow([1/args.sample_rate, rgv_state[1][0], rgv_state[1][1], rgv_state[0]])
