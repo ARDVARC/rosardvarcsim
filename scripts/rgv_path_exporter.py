@@ -35,6 +35,8 @@ file_path = os.path.join(package_path, "rgv_paths", file_name)
 
 with open(file_path, 'w') as csvfile:
     writer = csv.writer(csvfile)
-    for t in np.arange(0.0, args.duration, 1/args.sample_rate):
+    rgv_state0 = getRgvStateAtTime(rgv=rgv, t=0)
+    writer.writerow([rgv_state0[1][0], rgv_state0[1][1], rgv_state0[0]])
+    for t in np.arange(1/args.sample_rate, args.duration, 1/args.sample_rate):
         rgv_state = getRgvStateAtTime(rgv=rgv, t=t)
-        writer.writerow([1/args.sample_rate, rgv_state[1][0], rgv_state[1][1], rgv_state[0]])
+        writer.writerow([rgv_state[1][0], rgv_state[1][1], rgv_state[0], "T", 1/args.sample_rate])

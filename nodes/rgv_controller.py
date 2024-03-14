@@ -13,6 +13,7 @@ import random
 import rospkg
 import os
 from typing import List
+import math
 
 
 @dataclass
@@ -40,17 +41,27 @@ def load_file_func(args: argparse.Namespace) -> Path:
     
     with open(file_path) as csvfile:
         reader = csv.reader(csvfile)
+        first_line = reader.__next__()
         t = 0
         ts = []
-        xs = []
-        ys = []
-        yaws = []
+        xs = [float(first_line[0])]
+        ys = [float(first_line[1])]
+        yaws = [float(first_line[2])]
         for line in reader:
             ts.append(t)
-            t += float(line[0])
-            xs.append(float(line[1]))
-            ys.append(float(line[2]))
-            yaws.append(float(line[3]))
+            xs.append(float(line[0]))
+            ys.append(float(line[1]))
+            yaws.append(float(line[2]))
+            
+            time_type = line[3]
+            if time_type == "T":
+                t += float(line[4])
+            elif time_type == "S":
+                dist = math.sqrt((xs[-1]-xs[-2])**2+(ys[-1]-ys[-2])**2)
+                t += dist/float(line[4])
+            else:
+                raise Exception(f"Unrecognized time_type '{time_type}'")
+            
         return Path(ts, xs, ys, yaws)
 
 def generate_func(args: argparse.Namespace) -> Path:
