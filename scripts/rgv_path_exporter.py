@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from rosardvarcsim.rgv_path_generator import RGV, getRgvStateAtTime
+from rosardvarcsim.rgv_path_generator import RGV, getRgvStateAtTime, RgvMovementType
 import argparse
 import numpy as np
 import csv
