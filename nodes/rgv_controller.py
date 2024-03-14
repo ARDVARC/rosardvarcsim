@@ -61,6 +61,7 @@ def load_file_func(args: argparse.Namespace) -> Path:
                 t += dist/float(line[4])
             else:
                 raise Exception(f"Unrecognized time_type '{time_type}'")
+        ts.append(t)
             
         return Path(ts, xs, ys, yaws)
 
@@ -127,8 +128,8 @@ while not rospy.is_shutdown():
     
     if i == len(path.ts) - 1:
         x = path.xs[i]
-        y = path.xs[i]
-        yaw = path.xs[i]
+        y = path.ys[i]
+        yaw = path.yaws[i]
     else:
         percent_between_setpoints = (path.ts[i+1] - t)/(path.ts[i+1] - path.ts[i])
         x = path.xs[i] * percent_between_setpoints + path.xs[i+1] * (1-percent_between_setpoints)
