@@ -37,6 +37,25 @@ with open(file_path, 'w') as csvfile:
     writer = csv.writer(csvfile)
     rgv_state0 = getRgvStateAtTime(rgv=rgv, t=0)
     writer.writerow([rgv_state0[1][0], rgv_state0[1][1], rgv_state0[0]])
-    for t in np.arange(1/args.sample_rate, args.duration, 1/args.sample_rate):
-        rgv_state = getRgvStateAtTime(rgv=rgv, t=t)
-        writer.writerow([rgv_state[1][0], rgv_state[1][1], rgv_state[0], "T", 1/args.sample_rate])
+    for i in range(0,len(rgv.vec_movementType)):
+        movement_type = rgv.vec_movementType[i]
+        t = rgv.vec_time[i]
+        if i == len(rgv.vec_movementType)-1:
+            t_next = args.duration
+        else:
+            t_next = rgv.vec_time[i+1]
+        
+        if movement_type == RgvMovementType.Straight:
+            rgv_state = getRgvStateAtTime(rgv=rgv, t=t_next)
+            writer.writerow([rgv_state[1][0], rgv_state[1][1], rgv_state[0], "S", rgv.speed])
+        elif movement_type == RgvMovementType.Wait:
+            rgv_state = getRgvStateAtTime(rgv=rgv, t=t_next)
+            writer.writerow([rgv_state[1][0], rgv_state[1][1], rgv_state[0], "T", t_next-t])
+        else:
+            t_pieces = np.arange(t, t_next, 1/args.sample_rate)
+            for t_piece in t_pieces:
+                rgv_state = getRgvStateAtTime(rgv=rgv, t=t_piece)
+                writer.writerow([rgv_state[1][0], rgv_state[1][1], rgv_state[0], "T", 1/args.sample_rate])
+            final_t_piece_duration = t_next - t_pieces[-1]
+            rgv_state = getRgvStateAtTime(rgv=rgv, t=t_next)
+            writer.writerow([rgv_state[1][0], rgv_state[1][1], rgv_state[0], "T", final_t_piece_duration])
