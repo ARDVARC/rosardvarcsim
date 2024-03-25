@@ -61,7 +61,7 @@ while not rospy.is_shutdown():
     rgv1_position_estimate = rgv1_position + np.random.normal(0, ESTIMATED_POSITION_STD, 3) * distance_to_rgv1 * DISTANCE_ERROR_MULTIPLIER
     rgv2_position_estimate = rgv2_position + np.random.normal(0, ESTIMATED_POSITION_STD, 3) * distance_to_rgv2 * DISTANCE_ERROR_MULTIPLIER
     rgv1_moving = float(np.linalg.norm(rgv1_position_estimate-prev_rgv1_position_estimate)) > MOVING_DISTANCE_THRESHOLD
-    rgv2_moving = float(np.linalg.norm(rgv1_position_estimate-prev_rgv2_position_estimate)) > MOVING_DISTANCE_THRESHOLD
+    rgv2_moving = float(np.linalg.norm(rgv2_position_estimate-prev_rgv2_position_estimate)) > MOVING_DISTANCE_THRESHOLD
     prev_rgv1_position_estimate = rgv1_position_estimate
     prev_rgv2_position_estimate = rgv2_position_estimate
     

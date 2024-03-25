@@ -199,7 +199,7 @@ def getRandomRgvMovementType() -> RgvMovementType:
         return RgvMovementType.ArcRight
 
 def distanceToBoundary(vec_pos_local_ne: np.ndarray) -> float:
-    missionAreaHalfWidth = 22.86
+    missionAreaHalfWidth = 12.86
     return min(missionAreaHalfWidth + vec_pos_local_ne[0], missionAreaHalfWidth - vec_pos_local_ne[0], missionAreaHalfWidth + vec_pos_local_ne[1], missionAreaHalfWidth - vec_pos_local_ne[1])
 
 

@@ -94,4 +94,6 @@
             <node name="fake_estimator" pkg="rosardvarcsim" type="fake_estimator.py" output="screen"/>
         </group>
     </group>
+    
+    <node name="animator" pkg="rosardvarcsim" type="animator.py" output="screen"/>
 </launch>
