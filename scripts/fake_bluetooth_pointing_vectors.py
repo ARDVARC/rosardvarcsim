@@ -33,7 +33,7 @@ def calculate_vector(uas_pose: Pose, rgv_pose: Pose) -> np.ndarray:
     return vec_uas2rgv_bt
 
 
-rospy.init_node("fake_bluetooth")
+rospy.init_node("fake_bluetooth_pointing_vectors")
 rospy.wait_for_service("gazebo/get_model_state")
 model_service = rospy.ServiceProxy("gazebo/get_model_state", GetModelState)
 rgv1_model_request = GetModelStateRequest()

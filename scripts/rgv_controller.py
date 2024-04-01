@@ -32,7 +32,7 @@ class RgvMovementType(IntEnum):
     
 
 class RGV:
-    speed = 2
+    speed = 1
     turningRadius = 4
     uTurnRadius = 2
     waitTimeMin = 90
