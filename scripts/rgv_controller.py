@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 import sys
-from gazebo_msgs.srv import SetModelState, SetModelStateRequest, SetModelStateResponse
+from gazebo_msgs.msg import ModelState
 from scipy.spatial.transform import Rotation
 from geometry_msgs.msg import Quaternion
 import numpy as np
@@ -13,9 +13,7 @@ from typing import Tuple
 
 
 UPDATE_RATE = 120
-SPEED = 0.5
 
-DX = SPEED/UPDATE_RATE
 
 def fillQuaternionMessage(msg: Quaternion, values: np.ndarray):
     msg.x = values[0]
@@ -34,7 +32,7 @@ class RgvMovementType(IntEnum):
     
 
 class RGV:
-    speed = 1
+    speed = 2
     turningRadius = 4
     uTurnRadius = 2
     waitTimeMin = 90
@@ -199,7 +197,7 @@ def getRandomRgvMovementType() -> RgvMovementType:
         return RgvMovementType.ArcRight
 
 def distanceToBoundary(vec_pos_local_ne: np.ndarray) -> float:
-    missionAreaHalfWidth = 12.86
+    missionAreaHalfWidth = 22.86
     return min(missionAreaHalfWidth + vec_pos_local_ne[0], missionAreaHalfWidth - vec_pos_local_ne[0], missionAreaHalfWidth + vec_pos_local_ne[1], missionAreaHalfWidth - vec_pos_local_ne[1])
 
 
@@ -212,25 +210,22 @@ seed: int = rospy.get_param("~seed", int(random.random()*(2**16))) # type: ignor
 rgv = RGV(seed, np.array([rgv_x0,rgv_y0]), rgv_Y0, 60*60)
 # rospy.loginfo(f"\nPositions:\n{rgv.trix_vec_position_local_ne}\nMovement Types:\n{rgv.vec_movementType}\nTimes:\n{rgv.vec_time}")
 
-rospy.wait_for_service("gazebo/set_model_state")
-mover_service_proxy = rospy.ServiceProxy("gazebo/set_model_state", SetModelState)
+mover_pub = rospy.Publisher("gazebo/set_model_state", ModelState, queue_size=1)
 rate = rospy.Rate(UPDATE_RATE)
 
-rqst = SetModelStateRequest()
-rqst.model_state.model_name = rgv_name
-rqst.model_state.pose.position.x = rgv_x0
-rqst.model_state.pose.position.y = rgv_y0
+model_state = ModelState()
+model_state.model_name = rgv_name
+model_state.pose.position.x = rgv_x0
+model_state.pose.position.y = rgv_y0
 quat = Rotation.from_euler("xyz", [0, 0, rgv_Y0]).as_quat()
-fillQuaternionMessage(rqst.model_state.pose.orientation, quat)
+fillQuaternionMessage(model_state.pose.orientation, quat)
 start_time = rospy.Time.now()
 
 while not rospy.is_shutdown():
-    resp: SetModelStateResponse = mover_service_proxy(rqst)
-    if not resp.success:
-        rospy.logwarn(resp.status_message)
+    mover_pub.publish(model_state)
     rate.sleep()
     yaw, pos = getRgvStateAtTime(rgv, (rospy.Time.now() - start_time).to_sec())
-    rqst.model_state.pose.position.x = pos[0]
-    rqst.model_state.pose.position.y = pos[1]
+    model_state.pose.position.x = pos[0]
+    model_state.pose.position.y = pos[1]
     quat = Rotation.from_euler("xyz", [0, 0, yaw]).as_quat()
-    fillQuaternionMessage(rqst.model_state.pose.orientation, quat)
+    fillQuaternionMessage(model_state.pose.orientation, quat)

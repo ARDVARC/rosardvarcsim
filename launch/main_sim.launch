@@ -14,6 +14,7 @@
     <arg name="rgvs" default="true"/>
     <arg name="rgv_bluetooth" default="true"/>
     <arg name="rgv_estimator" default="false"/>
+    <arg name="fake_bt_vectors" default="false"/>
     <arg name="rgv1_x" default="2"/>
     <arg name="rgv1_y" default="2"/>
     <arg name="rgv1_Y" default="0"/>
@@ -95,5 +96,8 @@
         </group>
     </group>
     
-    <node name="animator" pkg="rosardvarcsim" type="animator.py" output="screen"/>
+    <group if="$(arg fake_bt_vectors)">
+        <!-- Add fake bluetooth pointing vectors -->
+        <node name="fake_bluetooth_pointing_vectors" pkg="rosardvarcsim" type="fake_bluetooth_pointing_vectors.py" output="screen"/>
+    </group>
 </launch>
