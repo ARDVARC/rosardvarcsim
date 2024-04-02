@@ -4,29 +4,29 @@
     <!-- Modified from https://github.com/PX4/PX4-Autopilot/blob/main/launch/mavros_posix_sitl.launch -->
     
     <!-- UAS pose -->
-    <arg name="x" default="0"/>
-    <arg name="y" default="0"/>
-    <arg name="z" default="0"/>
-    <arg name="R" default="0"/>
-    <arg name="P" default="0"/>
-    <arg name="Y" default="0"/>
+    <arg name="x" default="0" doc="Initial x position of UAS in local frame [m]"/>
+    <arg name="y" default="0" doc="Initial y position of UAS in local frame [m]"/>
+    <arg name="z" default="0" doc="Initial z position of UAS in local frame [m]"/>
+    <arg name="R" default="0" doc="Initial roll angle of UAS in local frame [rad]"/>
+    <arg name="P" default="0" doc="Initial pitch angle of UAS in local frame [rad]"/>
+    <arg name="Y" default="0" doc="Initial yaw angle of UAS in local frame [rad]"/>
     <!-- RGV params -->
-    <arg name="rgvs" default="true"/>
-    <arg name="rgv_bluetooth" default="true"/>
-    <arg name="rgv_estimator" default="false"/>
-    <arg name="fake_bt_vectors" default="false"/>
-    <arg name="rgv1_x" default="2"/>
-    <arg name="rgv1_y" default="2"/>
-    <arg name="rgv1_Y" default="0"/>
-    <arg name="rgv2_x" default="-2"/>
-    <arg name="rgv2_y" default="-2"/>
-    <arg name="rgv2_Y" default="1.57079632679"/>
+    <arg name="rgvs" default="true" doc="Whether or not to simulate the two RGVs"/>
+    <arg name="fake_bluetooth_angles" default="true" doc="Whether or not to publish fake raw bluetooth angles"/>
+    <arg name="fake_bluetooth_pointing_vectors" default="false" doc="Whether or not to publish fake bluetooth vectors"/>
+    <arg name="fake_estimator" default="false" doc="Whether or not to publish fake RGV estimates"/>
+    <arg name="rgv1_x" default="2" doc="Initial x position of RGV 1 in local frame [m]"/>
+    <arg name="rgv1_y" default="2" doc="Initial x position of RGV 1 in local frame [m]"/>
+    <arg name="rgv1_Y" default="0" doc="Initial x position of RGV 2 in local frame [rad]"/>
+    <arg name="rgv2_x" default="-2" doc="Initial x position of RGV 2 in local frame [m]"/>
+    <arg name="rgv2_y" default="-2" doc="Initial x position of RGV 2 in local frame [m]"/>
+    <arg name="rgv2_Y" default="1.57079632679" doc="Initial x position of RGV 1 in local frame [rad]"/>
     <!-- UAS model and world -->
-    <arg name="world" default="$(find rosardvarcsim)/worlds/main_sim_world.world"/>
-    <arg name="sdf" default="$(find rosardvarcsim)/models/ardvarc_drone/ardvarc_drone.sdf"/>
+    <arg name="world" default="$(find rosardvarcsim)/worlds/main_sim_world.world" doc="Path to gazebo .world file"/>
+    <arg name="sdf" default="$(find rosardvarcsim)/models/ardvarc_drone/ardvarc_drone.sdf" doc="Path to gazebo .sdf drone model"/>
 
     <!-- Gazebo configs -->
-    <arg name="gui" default="true"/>
+    <arg name="gui" default="true" doc="Whther or not display the gazebo GUI. Disabling the GUI greatly improves performance."/>
     <arg name="debug" default="false"/>
     <arg name="verbose" default="false"/>
     <arg name="paused" default="false"/>
@@ -85,18 +85,18 @@
             <param name="seed" type="int" value="2"/>
         </node>
         
-        <group if="$(arg rgv_bluetooth)">
+        <group if="$(arg fake_bluetooth_angles)">
             <!-- Add bluetooth data generator -->
             <node name="fake_bluetooth" pkg="rosardvarcsim" type="fake_bluetooth.py" output="screen"/>
         </group>
         
-        <group if="$(arg rgv_estimator)">
+        <group if="$(arg fake_estimator)">
             <!-- Add estimate generator -->
             <node name="fake_estimator" pkg="rosardvarcsim" type="fake_estimator.py" output="screen"/>
         </group>
     </group>
     
-    <group if="$(arg fake_bt_vectors)">
+    <group if="$(arg fake_bluetooth_pointing_vectors)">
         <!-- Add fake bluetooth pointing vectors -->
         <node name="fake_bluetooth_pointing_vectors" pkg="rosardvarcsim" type="fake_bluetooth_pointing_vectors.py" output="screen"/>
     </group>

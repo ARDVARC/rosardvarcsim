@@ -55,7 +55,7 @@ def model_sub_callback(msg: ModelStates):
         pass
         
 
-rospy.init_node("fake_bluetooth")
+rospy.init_node("fake_raw_bluetooth")
 model_sub = rospy.Subscriber("gazebo/model_states", ModelStates, model_sub_callback)
 bluetooth_pub = rospy.Publisher("bluetooth/az_els", BluetoothAzimuthElevation)
 rgv1_bluetooth_msg = BluetoothAzimuthElevation()

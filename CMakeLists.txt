@@ -163,10 +163,9 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/rgv_controller.py
-  scripts/fake_bluetooth.py
+  scripts/fake_bluetooth_angles.py
   scripts/fake_estimator.py
   scripts/animator.py
-  scripts/fake_mavros.py
   scripts/fake_bluetooth_pointing_vectors.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
