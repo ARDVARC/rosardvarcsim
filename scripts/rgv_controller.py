@@ -9,7 +9,8 @@ from scipy.optimize import fsolve
 from bisect import bisect
 from enum import IntEnum
 import random
-from typing import Tuple
+from typing import Optional, Tuple
+from std_srvs.srv import Trigger, TriggerRequest, TriggerResponse
 
 
 UPDATE_RATE = 120
@@ -201,6 +202,37 @@ def distanceToBoundary(vec_pos_local_ne: np.ndarray) -> float:
     return min(missionAreaHalfWidth + vec_pos_local_ne[0], missionAreaHalfWidth - vec_pos_local_ne[0], missionAreaHalfWidth + vec_pos_local_ne[1], missionAreaHalfWidth - vec_pos_local_ne[1])
 
 
+force_stopped_time: Optional[rospy.Time] = None
+delay_from_forced_stops: rospy.Duration = rospy.Duration.from_sec(0)
+
+def start_service_handler(request: TriggerRequest) -> TriggerResponse:
+    global force_stopped_time, delay_from_forced_stops
+    response = TriggerResponse()
+    if force_stopped_time == None:
+        # Already going
+        response.success = False
+        response.message = f"{rgv_name} is already going"
+    else:
+        delay_from_forced_stops += force_stopped_time - rospy.Time.now()
+        force_stopped_time = None
+        response.success = True
+        response.message = f"{rgv_name} is no longer stopped"
+    return response
+
+def stop_service_handler(request: TriggerRequest) -> TriggerResponse:
+    global force_stopped_time, delay_from_forced_stops
+    response = TriggerResponse()
+    if force_stopped_time != None:
+        # Already stopped
+        response.success = False
+        response.message = f"{rgv_name} is already stopped"
+    else:
+        force_stopped_time = rospy.Time.now()
+        response.success = True
+        response.message = f"{rgv_name} is now stopped"
+    return response
+
+
 rospy.init_node(sys.argv[1])
 rgv_name: str = rospy.get_param("~rgv_name") # type: ignore
 rgv_x0: float = rospy.get_param("~x0", 0) # type: ignore
@@ -211,6 +243,8 @@ rgv = RGV(seed, np.array([rgv_x0,rgv_y0]), rgv_Y0, 60*60)
 # rospy.loginfo(f"\nPositions:\n{rgv.trix_vec_position_local_ne}\nMovement Types:\n{rgv.vec_movementType}\nTimes:\n{rgv.vec_time}")
 
 mover_pub = rospy.Publisher("gazebo/set_model_state", ModelState, queue_size=1)
+start_service = rospy.Service(f"{sys.argv[1]}/start", Trigger, start_service_handler)
+stop_service = rospy.Service(f"{sys.argv[1]}/stop", Trigger, stop_service_handler)
 rate = rospy.Rate(UPDATE_RATE)
 
 model_state = ModelState()
@@ -224,7 +258,11 @@ start_time = rospy.Time.now()
 while not rospy.is_shutdown():
     mover_pub.publish(model_state)
     rate.sleep()
-    yaw, pos = getRgvStateAtTime(rgv, (rospy.Time.now() - start_time).to_sec())
+    if force_stopped_time == None:
+        now = rospy.Time.now() + delay_from_forced_stops - start_time
+    else:
+        now = force_stopped_time + delay_from_forced_stops - start_time
+    yaw, pos = getRgvStateAtTime(rgv, now.to_sec())
     model_state.pose.position.x = pos[0]
     model_state.pose.position.y = pos[1]
     quat = Rotation.from_euler("xyz", [0, 0, yaw]).as_quat()
