@@ -243,8 +243,8 @@ rgv = RGV(seed, np.array([rgv_x0,rgv_y0]), rgv_Y0, 60*60)
 # rospy.loginfo(f"\nPositions:\n{rgv.trix_vec_position_local_ne}\nMovement Types:\n{rgv.vec_movementType}\nTimes:\n{rgv.vec_time}")
 
 mover_pub = rospy.Publisher("gazebo/set_model_state", ModelState, queue_size=1)
-start_service = rospy.Service(f"{sys.argv[1]}/start", Trigger, start_service_handler)
-stop_service = rospy.Service(f"{sys.argv[1]}/stop", Trigger, stop_service_handler)
+start_service = rospy.Service(f"{rgv_name}/start", Trigger, start_service_handler)
+stop_service = rospy.Service(f"{rgv_name}/stop", Trigger, stop_service_handler)
 rate = rospy.Rate(UPDATE_RATE)
 
 model_state = ModelState()
