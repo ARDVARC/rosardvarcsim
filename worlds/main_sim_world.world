@@ -4,6 +4,7 @@
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
+      <pose>0 40 0 0 0 0</pose>
     </include>
     <!-- A ground plane -->
     <include>

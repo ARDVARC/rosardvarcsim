@@ -166,6 +166,7 @@ catkin_install_python(PROGRAMS
   scripts/fake_bluetooth_angles.py
   scripts/fake_estimator.py
   scripts/animator.py
+  scripts/bag_animator.py
   scripts/fake_bluetooth_pointing_vectors.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

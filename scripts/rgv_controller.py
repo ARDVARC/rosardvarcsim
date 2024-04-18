@@ -43,7 +43,7 @@ class RGV:
     arcTimeMin = 2
     arcTimeMax = 3
     uTurnBonusTimeMax = 4
-    waitChanceWeight = 0.1
+    waitChanceWeight = 0
     straightChanceWeight = 5
     arcChanceWeight = 1
     
@@ -198,7 +198,7 @@ def getRandomRgvMovementType() -> RgvMovementType:
         return RgvMovementType.ArcRight
 
 def distanceToBoundary(vec_pos_local_ne: np.ndarray) -> float:
-    missionAreaHalfWidth = 22.86
+    missionAreaHalfWidth = 16.5
     return min(missionAreaHalfWidth + vec_pos_local_ne[0], missionAreaHalfWidth - vec_pos_local_ne[0], missionAreaHalfWidth + vec_pos_local_ne[1], missionAreaHalfWidth - vec_pos_local_ne[1])
 
 
