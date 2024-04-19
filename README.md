@@ -14,7 +14,10 @@ To not load the Gazebo GUI (which slows things down quite a bit), run:
 ```
 roslaunch rosardvarcsim main_sim.launch gui:=false
 ```
-
+The current incantation is as follows (this launches the sim make sure all mains are checked out and current and re `catkin_make`)(updated 4/19/24)
+```
+roslaunch rosardvarcsim sim_and_fsw.launch fake_bluetooth_angles:=false fake_bluetooth_pointing_vectors:=true
+```
 ## Setup
 
 If you're using WSL I'd recommend following [these instructions to set up your graphics card to work with WSL](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps). It should make Gazebo run a lot faster.
