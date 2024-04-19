@@ -10,7 +10,7 @@ material tag2
 
 			texture_unit
 			{
-				texture april_36h11-5.png
+				texture 4x4_1000-5.png
 				filtering none
 				scale 1 1
 			}

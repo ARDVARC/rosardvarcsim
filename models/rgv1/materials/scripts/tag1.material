@@ -10,7 +10,7 @@ material tag1
 
 			texture_unit
 			{
-				texture 6x6_1000-5.png
+				texture 4x4_1000-4.png
 				filtering none
 				scale 1 1
 			}
