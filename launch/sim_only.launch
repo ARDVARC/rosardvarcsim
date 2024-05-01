@@ -12,6 +12,7 @@
     <arg name="Y" default="0" doc="Initial yaw angle of UAS in local frame [rad]"/>
     <!-- RGV params -->
     <arg name="rgvs" default="true" doc="Whether or not to simulate the two RGVs"/>
+    <arg name="moving_rgvs" default="true" doc="Whether or not to make the two RGVs move"/>
     <arg name="fake_bluetooth_angles" default="true" doc="Whether or not to publish fake raw bluetooth angles"/>
     <arg name="fake_bluetooth_pointing_vectors" default="false" doc="Whether or not to publish fake bluetooth vectors"/>
     <arg name="fake_estimator" default="false" doc="Whether or not to publish fake RGV estimates"/>
@@ -70,20 +71,22 @@
         <node name="rgv2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -file $(find rosardvarcsim)/models/rgv2/rgv2.sdf -model rgv2 -x $(arg rgv2_x) -y $(arg rgv2_y) -z 0 -R 0 -P 0 -Y $(arg rgv2_Y)"/>
         
         <!-- Add RGV controller nodes -->
-        <node name="rgv1_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
-            <param name="rgv_name" type="string" value="rgv1"/>
-            <param name="x0" type="double" value="$(arg rgv1_x)"/>
-            <param name="y0" type="double" value="$(arg rgv1_y)"/>
-            <param name="Y0" type="double" value="$(arg rgv1_Y)"/>
-            <param name="seed" type="int" value="1"/>
-        </node>
-        <node name="rgv2_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
-            <param name="rgv_name" type="string" value="rgv2"/>
-            <param name="x0" type="double" value="$(arg rgv2_x)"/>
-            <param name="y0" type="double" value="$(arg rgv2_y)"/>
-            <param name="Y0" type="double" value="$(arg rgv2_Y)"/>
-            <param name="seed" type="int" value="2"/>
-        </node>
+        <group if="$(arg moving_rgvs)">
+            <node name="rgv1_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
+                <param name="rgv_name" type="string" value="rgv1"/>
+                <param name="x0" type="double" value="$(arg rgv1_x)"/>
+                <param name="y0" type="double" value="$(arg rgv1_y)"/>
+                <param name="Y0" type="double" value="$(arg rgv1_Y)"/>
+                <param name="seed" type="int" value="1"/>
+            </node>
+            <node name="rgv2_controller" pkg="rosardvarcsim" type="rgv_controller.py" output="screen">
+                <param name="rgv_name" type="string" value="rgv2"/>
+                <param name="x0" type="double" value="$(arg rgv2_x)"/>
+                <param name="y0" type="double" value="$(arg rgv2_y)"/>
+                <param name="Y0" type="double" value="$(arg rgv2_Y)"/>
+                <param name="seed" type="int" value="2"/>
+            </node>
+        </group>
         
         <group if="$(arg fake_bluetooth_angles)">
             <!-- Add bluetooth data generator -->

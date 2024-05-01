@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- SIM -->
+    <!-- SIM + FSW -->
     <!-- ARGS -->
     <arg name="x" default="0" doc="Initial x position of UAS in local frame [m]"/>
     <arg name="y" default="0" doc="Initial y position of UAS in local frame [m]"/>
@@ -24,11 +24,11 @@
     <arg name="gui" default="true" doc="Whther or not display the gazebo GUI. Disabling the GUI greatly improves performance."/>
     <arg name="fcu_url" default="udp://:14540@localhost:14557"/>
     <!-- LAUNCH -->
-    <include file="$(find rosardvarcsim)/launch/sim_only.launch" pass_all_args="true"/>
+    <include file="$(find rosardvarcsim)/launch/sim_and_fsw.launch" pass_all_args="true"/>
     
-    <!-- FSW -->
+    <!-- BAG -->
     <!-- ARGS -->
+    <arg name="bagname" default="test_bag" doc="Bag name prefix"/>
     <!-- LAUNCH -->
-    <include file="$(find rosardvarc)/launch/fsw_only.launch" pass_all_args="true">
-    </include>
+    <node pkg="rosbag" type="record" name="rosbag_recorder" args="record -o $(arg bagname) -b 0 bluetooth/az_els mavros/local_position/pose estimation/direction_vectors_uas estimation/estimated_rgv_states state_machine/mission_states state_machine/state_machine_criteria state_machine/forced usb_cam/image_raw/compressed estimation/rgv_local_projections camera/recent_rgv_sightings mavros/state mavros/setpoint_position/local"/>
 </launch>
